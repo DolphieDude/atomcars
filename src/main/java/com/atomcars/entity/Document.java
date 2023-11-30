@@ -1,20 +1,17 @@
 package com.atomcars.entity;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+
+@Entity
+@Getter
 public class Document {
-    Long id;
-    Long key;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    CompleteUser user;
+    private Long key;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getKey() {
-        return key;
-    }
-
-    public CompleteUser getUser() {
-        return user;
-    }
+    @ManyToOne
+    private CompleteUser user;
 }

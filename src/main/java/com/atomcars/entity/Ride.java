@@ -1,31 +1,27 @@
 package com.atomcars.entity;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+
+@Entity
+@Getter
 public class Ride {
-    Long id;
 
-    Double destinationLatitude;
-    Double destinationLongitude;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    CompleteUser user;
-    Car car;
+    private Double destinationLatitude;
 
-    public Long getId() {
-        return id;
-    }
+    private Double destinationLongitude;
 
-    public Double getDestinationLatitude() {
-        return destinationLatitude;
-    }
+    @OneToOne
+    private CompleteUser user;
 
-    public Double getDestinationLongitude() {
-        return destinationLongitude;
-    }
+    @OneToOne
+    private Car car;
 
-    public CompleteUser getUser() {
-        return user;
-    }
-
-    public Car getCar() {
-        return car;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

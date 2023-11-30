@@ -1,58 +1,51 @@
 package com.atomcars.entity;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.ArrayList;
 
+@Entity
+@Getter
 public class Car {
-    Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    Double latitude;
-    Double longitude;
+    private Double latitude;
 
-    Boolean isStolen;
+    private Double longitude;
 
-    ArrayList<Ride> rideList;
+    private Boolean isStolen;
 
-    Ride currentRide;
+    @OneToMany
+    private ArrayList<Ride> rideList;
 
-    public Long getId() {
-        return id;
-    }
+    @OneToOne
+    private Ride currentRide;
 
-    public Double getLatitude() {
-        return latitude;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
-        return longitude;
-    }
-
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public Boolean getStolen() {
-        return isStolen;
     }
 
     public void setStolen(Boolean stolen) {
         isStolen = stolen;
     }
 
-    public ArrayList<Ride> getRideList() {
-        return rideList;
-    }
-
-    public Ride getCurrentRide() {
-        return currentRide;
-    }
-
     public void setCurrentRide(Ride currentRide) {
         this.currentRide = currentRide;
     }
 
-    public void endRide() {}
+    public void endRide() {
+        this.rideList.add(this.currentRide);
+        this.currentRide = null;
+    }
 }

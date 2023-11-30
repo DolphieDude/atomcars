@@ -1,29 +1,27 @@
 package com.atomcars.entity;
 
-public class Violation {
-    Long id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
-    String description;
+@Entity
+@Getter
+@Setter
+public class Violation {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String description;
+
+    private String penalty;
 
     public Long getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getPenalty() {
-        return penalty;
-    }
-
-    public void setPenalty(String penalty) {
-        this.penalty = penalty;
-    }
-
-    String penalty;
 }
