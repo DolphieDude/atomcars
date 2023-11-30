@@ -36,7 +36,9 @@ public class CompleteUser extends BasicUser {
         this.documents.add(document);
     }
 
-    public void startRide(Car car, Double destinationLatitude, Double destinationLongitude) { }
+    public void startRide(Car car, Double destinationLatitude, Double destinationLongitude) {
+        this.currentRide = new Ride(destinationLatitude, destinationLongitude, this, car);
+    }
 
     public void endRide() {
         this.rideList.add(this.currentRide);
