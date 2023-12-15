@@ -1,40 +1,72 @@
 package com.atomcars;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+@Component
 public class UnitOfWorkImpl implements UnitOfWork {
 
-    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory;
 
-    public UnitOfWorkImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public UnitOfWorkImpl(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public void begin() {
-        EntityTransaction transaction = entityManager.getTransaction();
-        if (transaction.isActive()) {
-            throw new IllegalStateException();
+        EntityManagerHolder emHolder = (EntityManagerHolder) TransactionSynchronizationManager.getResource(entityManagerFactory);
+        if (emHolder == null || emHolder.isSynchronizedWithTransaction()) {
+            EntityManager entityManager = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+            TransactionSynchronizationManager.bindResource(entityManagerFactory, new EntityManagerHolder(entityManager));
         }
-        transaction.begin();
     }
 
     @Override
     public void save() {
-        try {
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            this.dispose();
-            e.printStackTrace();
+        EntityTransaction transaction = getTransaction();
+        if (transaction != null && transaction.isActive()) {
+            transaction.commit();
+            TransactionSynchronizationManager.unbindResource(entityManagerFactory);
         }
     }
 
     @Override
     public void dispose() {
-        EntityTransaction transaction = entityManager.getTransaction();
-        if (transaction.isActive()) {
+        EntityTransaction transaction = getTransaction();
+        if (transaction != null && transaction.isActive()) {
             transaction.rollback();
+            TransactionSynchronizationManager.unbindResource(entityManagerFactory);
         }
+    }
+
+    @Override
+    public void registerNew(Object entity) {
+        getEntityManager().persist(entity);
+    }
+
+    @Override
+    public void registerDirty(Object entity) {
+        getEntityManager().merge(entity);
+    }
+
+    @Override
+    public void registerRemoved(Object entity) {
+        getEntityManager().remove(entity);
+    }
+
+    private EntityManager getEntityManager() {
+        return EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+    }
+
+    private EntityTransaction getTransaction() {
+        return getEntityManager().getTransaction();
     }
 }
