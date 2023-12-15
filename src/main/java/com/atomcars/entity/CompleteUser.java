@@ -1,8 +1,6 @@
 package com.atomcars.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,16 +15,17 @@ import java.util.Objects;
 @AllArgsConstructor
 public class CompleteUser extends BasicUser {
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private ArrayList<Document> documents;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private ArrayList<Ride> rideList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private ArrayList<Violation> violationList;
 
     @OneToOne
+    @JoinColumn(name = "current_ride_id")
     private Ride currentRide;
 
     public CompleteUser(BasicUser parentUser, Document document) {

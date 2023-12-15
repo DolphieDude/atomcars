@@ -10,40 +10,25 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//@SpringBootTest(classes = RepositoryTestConfig.class)
-@DataJpaTest
-@SpringBootTest(classes = RepositoryTestConfig.class)
+@SpringBootTest
+@ComponentScan(basePackages = {"com.atomcars.repository"})
 public class CompleteUserRepositoryTest {
 
     @Autowired
     private CompleteUserRepository userRepo;
 
-//    @Autowired
-//    private EntityManager entityManager;
-//    private UnitOfWork unitOfWork;
-
     @Test
-    public void shouldGetUserById() {
-//        this.unitOfWork = new UnitOfWorkImpl(entityManager);
-        Long id = 5L;
-        CompleteUser expected = new CompleteUser(id, "name", "email");
+    public void testSaveUser() {
+        CompleteUser user = new CompleteUser(101L, "Foo", "Bar");
+        userRepo.save(user);
 
-        CompleteUser mockUser = new CompleteUser(id, "name", "email");
-
-//        this.unitOfWork.begin();
-        userRepo.save(mockUser);
-
-        CompleteUser actual = userRepo.findById(id).orElse(null);
-
-
-//        mockUserRepo.save(mockUser);
-//
-//        CompleteUser actual = mockUserRepo.findById(id).orElse(null);
-
-        assertEquals(expected, actual);
-//        this.unitOfWork.dispose();
+        CompleteUser savedUser = userRepo.findById(user.getId()).orElse(null);
+        assertNotNull(savedUser);
+        assertEquals(user, savedUser);
     }
 }

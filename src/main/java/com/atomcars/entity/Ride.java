@@ -18,7 +18,7 @@ public class Ride {
 
     private Double destinationLongitude;
 
-    @OneToOne
+    @ManyToOne
     private CompleteUser user;
 
     @OneToOne
