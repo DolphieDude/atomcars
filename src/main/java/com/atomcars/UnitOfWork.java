@@ -1,7 +1,5 @@
 package com.atomcars;
 
-import org.springframework.context.annotation.Bean;
-
 public interface UnitOfWork {
     void begin();
 

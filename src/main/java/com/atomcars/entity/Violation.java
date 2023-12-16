@@ -1,27 +1,36 @@
 package com.atomcars.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Violation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "penalty")
     private String penalty;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private CompleteUser completeUser;
 
     public Long getId() {
         return id;
     }
 
+    public Violation(String description) {
+        this.description = description;
+    }
 }

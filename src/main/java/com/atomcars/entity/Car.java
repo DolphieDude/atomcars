@@ -10,18 +10,23 @@ import java.util.ArrayList;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "latitude")
     private Double latitude;
 
+    @Column(name = "longitude")
     private Double longitude;
 
+    @Column(name = "is_stolen")
     private Boolean isStolen;
 
-    @OneToMany
+    @OneToMany(mappedBy = "car")
     private ArrayList<Ride> rideList;
 
     @OneToOne
+    @JoinColumn(name = "current_ride_id")
     private Ride currentRide;
 
     public void setId(Long id) {

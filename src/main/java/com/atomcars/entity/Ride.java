@@ -12,16 +12,21 @@ public class Ride {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "destination_latitude")
     private Double destinationLatitude;
 
+    @Column(name = "destination_longitude")
     private Double destinationLongitude;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private CompleteUser user;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "car_id")
     private Car car;
 
     public Ride(Double destinationLatitude, Double destinationLongitude, CompleteUser user, Car car) {

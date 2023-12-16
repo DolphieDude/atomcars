@@ -11,15 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-@Component
 public class UnitOfWorkImpl implements UnitOfWork {
 
-    private final EntityManagerFactory entityManagerFactory;
-
-    public UnitOfWorkImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
-
+    private final EntityManagerFactory entityManagerFactory = null;
     @Override
     public void begin() {
         EntityManagerHolder emHolder = (EntityManagerHolder) TransactionSynchronizationManager.getResource(entityManagerFactory);

@@ -10,23 +10,24 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompleteUser extends BasicUser {
 
     @OneToMany(mappedBy = "user")
-    private ArrayList<Document> documents;
+    private ArrayList<Document> documents = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private ArrayList<Ride> rideList;
+    private ArrayList<Ride> rideList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private ArrayList<Violation> violationList;
+    @OneToMany
+    private ArrayList<Violation> violationList = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "current_ride_id")
-    private Ride currentRide;
+    private Long currentRideId;
+
+
 
     public CompleteUser(BasicUser parentUser, Document document) {
         this.setId(parentUser.getId());
@@ -46,13 +47,13 @@ public class CompleteUser extends BasicUser {
     }
 
     public void startRide(Car car, Double destinationLatitude, Double destinationLongitude) {
-        this.currentRide = new Ride(destinationLatitude, destinationLongitude, this, car);
+        this.currentRideId = new Ride(destinationLatitude, destinationLongitude, this, car).getId();
     }
 
-    public void endRide() {
-        this.rideList.add(this.currentRide);
-        this.currentRide = null;
-    }
+//    public void endRide() {
+//        this.rideList.add(this.currentRide);
+//        this.currentRide = null;
+//    }
 
     public void addViolation(Violation violation) {
         this.violationList.add(violation);
