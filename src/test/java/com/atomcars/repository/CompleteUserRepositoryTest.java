@@ -70,7 +70,7 @@ public class CompleteUserRepositoryTest {
 
     @Test
     public void testFindByDocumentsContaining() {
-        Document document = new Document(111L);
+        Document document = new Document();
 
         CompleteUser user1 = new CompleteUser("Foo Bar", "foobar@mail.com");
         user1.addDocument(document);
