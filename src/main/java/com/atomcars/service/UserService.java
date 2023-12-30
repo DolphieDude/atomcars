@@ -14,10 +14,23 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public void signup(UserDto userDto) {
+    public UserDto signup(UserDto userDto) {
         CompleteUser user = new CompleteUser(userDto.getName(), userDto.getEmail());
         // Additional user setup logic if needed
         userRepository.save(user);
-        System.out.println("saved");
+        System.out.println("User saved with ID: " + user.getId());
+
+        // Convert the CompleteUser to UserDto and return it
+        return convertToDto(user);
     }
+
+    private UserDto convertToDto(CompleteUser user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setEmail(user.getEmail());
+        // Add other fields as needed
+        return userDto;
+    }
+
 }

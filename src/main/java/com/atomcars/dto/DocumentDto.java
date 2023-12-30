@@ -6,11 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class DocumentUploadDto {
-    private Long userId;
+public class DocumentDto {
     private MultipartFile file;
-    // Add other fields as needed
+    private Long userId;
 
-    // Constructors, getters, setters as required
+    public DocumentDto(MultipartFile file, Long userId) {
+        this.userId = userId;
+        this.file = file;
+    }
 }
 

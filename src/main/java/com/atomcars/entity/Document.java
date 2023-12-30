@@ -15,19 +15,12 @@ public class Document {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "key")
-    private Long key;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "file_data", columnDefinition = "bytea")
+    private byte[] fileData;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private CompleteUser user;
-
-    @Lob
-    @Column(name = "file_data", columnDefinition = "bytea")
-    private byte[] fileData;
-
-
-    public Document(Long key) {
-        this.key = key;
-    }
 }

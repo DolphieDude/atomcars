@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Document Upload</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         body {
@@ -27,6 +27,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
         }
 
         label {
@@ -35,7 +36,7 @@
             color: #555;
         }
 
-        input {
+        input[type="file"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -52,6 +53,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            width: 100%;
         }
 
         button:hover {
@@ -61,51 +63,45 @@
 </head>
 <body>
 
-<h2>Signup</h2>
+<h2>Document Upload</h2>
 
-<form id="signupForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
+<form id="documentUploadForm" enctype="multipart/form-data">
+    <label for="file">Choose a document:</label>
+    <input type="file" id="file" name="file" accept=".pdf, .doc, .docx" required>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+    <!-- Retrieve the user ID from the URL parameters -->
+    <input type="hidden" id="userId" name="userId" value="">
 
-    <button type="submit">Signup</button>
+    <button type="submit">Upload Document</button>
 </form>
 
 <script>
     $(document).ready(function () {
-        $("#signupForm").submit(function (event) {
+        // Extract the user ID from the URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var userId = urlParams.get('userId');
+
+        // Set the user ID in the hidden input
+        $("#userId").val(userId);
+
+        $("#documentUploadForm").submit(function (event) {
             event.preventDefault();
 
-            var userDto = {
-                name: $("#name").val(),
-                email: $("#email").val()
-            };
+            var formData = new FormData();
+            formData.append("file", $("#file")[0].files[0]);
+            formData.append("userId", userId); // Include userId in the request data
 
             $.ajax({
                 type: "POST",
-                contentType: "application/json",
-                url: "/api/users/signup",
-                data: JSON.stringify(userDto),
+                url: "/api/documents/upload",
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function (response) {
-                    console.log("Signup Response:", response);
-
-                    // Extract the user ID from the response
-                    var userId = response.id;
-
-                    console.log("Extracted User ID:", userId);
-
-                    if (userId === undefined || userId === null || userId === "") {
-                        alert("User ID is not valid. Please check the server response.");
-                        return;
-                    }
-
-                    window.location.href = "/document-upload.html?userId=" + userId;
+                    alert("Document uploaded successfully: " + response);
                 },
                 error: function (error) {
-                    console.log("Error during signup:", error);
-                    alert("Error during signup: " + error.responseText);
+                    alert("Error during document upload: " + error.responseText);
                 }
             });
         });

@@ -6,9 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto {
+    private Long id;
     private String name;
     private String email;
-    // Add other fields as needed
-
-    // Constructors, getters, setters as required
 }
