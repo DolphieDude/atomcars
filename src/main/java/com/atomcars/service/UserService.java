@@ -1,25 +1,23 @@
 package com.atomcars.service;
 
+import com.atomcars.dto.UserDto;
 import com.atomcars.entity.CompleteUser;
-import com.atomcars.repository.CompleteUserRepository;
-import com.atomcars.repository.DocumentRepository;
-import lombok.AllArgsConstructor;
+import com.atomcars.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class UserService {
 
-    private final CompleteUserRepository userRepository;
-    private final DocumentRepository documentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public CompleteUser signUp(CompleteUser user) {
-        // You might want to perform validation here before saving the user
-
-        // Convert the basic user to a complete user and save to the database
-        userRepository.save(user);  // Explicitly cast the result
-        documentRepository.saveAll(user.getDocuments());
-
-        return user;
+    @Transactional
+    public void signup(UserDto userDto) {
+        CompleteUser user = new CompleteUser(userDto.getName(), userDto.getEmail());
+        // Additional user setup logic if needed
+        userRepository.save(user);
+        System.out.println("saved");
     }
 }

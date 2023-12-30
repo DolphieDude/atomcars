@@ -26,7 +26,12 @@ public abstract class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-//    @Id
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "id")
 //    private Long id;

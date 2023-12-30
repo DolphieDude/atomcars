@@ -29,10 +29,8 @@ public class CompleteUser extends User {
 
     private Long currentRideId;
 
-    public CompleteUser(Long id, String name, String email) {
-        this.setId(id);
-        this.setName(name);
-        this.setEmail(email);
+    public CompleteUser(String name, String email) {
+        super(name, email);
     }
 
     public void addDocument(Document document) {

@@ -25,7 +25,7 @@ public class CompleteUserRepositoryTest {
 
     @Test
     public void testSaveAndFindById() {
-        CompleteUser user = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
+        CompleteUser user = new CompleteUser("Foo Bar", "foobar@mail.com");
 
         when(completeUserRepository.save(any(CompleteUser.class))).thenReturn(user);
         when(completeUserRepository.findById(eq(user.getId()))).thenReturn(Optional.of(user));
@@ -43,7 +43,7 @@ public class CompleteUserRepositoryTest {
     @Test
     public void testFindByEmail() {
         String email = "foobar@mail.com";
-        CompleteUser user = new CompleteUser(102L, "Foo Bar", email);
+        CompleteUser user = new CompleteUser("Foo Bar", email);
 
         when(completeUserRepository.findByEmail(eq(email))).thenReturn(user);
 
@@ -56,7 +56,7 @@ public class CompleteUserRepositoryTest {
 
     @Test
     public void testFindByCurrentRideId() {
-        CompleteUser user = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
+        CompleteUser user = new CompleteUser("Foo Bar", "foobar@mail.com");
         Long currentRideId = 123L;
 
         when(completeUserRepository.findByCurrentRideId(eq(currentRideId))).thenReturn(user);
@@ -72,7 +72,7 @@ public class CompleteUserRepositoryTest {
     public void testFindByDocumentsContaining() {
         Document document = new Document(111L);
 
-        CompleteUser user1 = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
+        CompleteUser user1 = new CompleteUser("Foo Bar", "foobar@mail.com");
         user1.addDocument(document);
 
         List<CompleteUser> expectedUsers = List.of(user1);
@@ -88,7 +88,7 @@ public class CompleteUserRepositoryTest {
 
     @Test
     public void testFindByRideListIsNotNull() {
-        CompleteUser user1 = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
+        CompleteUser user1 = new CompleteUser("Foo Bar", "foobar@mail.com");
         user1.startRide(new Car(), 0.0, 0.0);
 
         List<CompleteUser> expectedUsers = List.of(user1);
@@ -106,7 +106,7 @@ public class CompleteUserRepositoryTest {
     public void testFindByViolationListIsNotEmpty() {
         Violation violation = new Violation("speeding");
 
-        CompleteUser user1 = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
+        CompleteUser user1 = new CompleteUser("Foo Bar", "foobar@mail.com");
         user1.addViolation(violation);
 
         List<CompleteUser> expectedUsers = List.of(user1);
