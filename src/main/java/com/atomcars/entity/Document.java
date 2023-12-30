@@ -3,9 +3,11 @@ package com.atomcars.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Document {
     @Id
@@ -19,6 +21,11 @@ public class Document {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private CompleteUser user;
+
+    @Lob
+    @Column(name = "file_data", columnDefinition = "bytea")
+    private byte[] fileData;
+
 
     public Document(Long key) {
         this.key = key;

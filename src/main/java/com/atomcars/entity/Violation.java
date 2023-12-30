@@ -26,10 +26,6 @@ public class Violation {
     @JoinColumn(name = "user_id")
     private CompleteUser completeUser;
 
-    public Long getId() {
-        return id;
-    }
-
     public Violation(String description) {
         this.description = description;
     }

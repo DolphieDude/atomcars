@@ -15,8 +15,6 @@ public interface CompleteUserRepository extends JpaRepository<CompleteUser, Long
 
     CompleteUser findByCurrentRideId(Long currentRideId);
 
-    CompleteUser updateAllByCurrentRideId(Long currentRideId);
-
     List<CompleteUser> findByDocumentsContaining(Document document);
 
     List<CompleteUser> findByRideListIsNotNull();

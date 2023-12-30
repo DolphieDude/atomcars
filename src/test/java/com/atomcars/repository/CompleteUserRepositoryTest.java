@@ -69,27 +69,11 @@ public class CompleteUserRepositoryTest {
     }
 
     @Test
-    public void testUpdateAllByCurrentRideId() {
-        CompleteUser user = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
-        Long currentRideId = 123L;
-
-        when(completeUserRepository.updateAllByCurrentRideId(eq(currentRideId))).thenReturn(user);
-
-        CompleteUser updatedUser = completeUserRepository.updateAllByCurrentRideId(currentRideId);
-
-        verify(completeUserRepository).updateAllByCurrentRideId(currentRideId);
-
-        assertEquals(user, updatedUser);
-    }
-
-    @Test
     public void testFindByDocumentsContaining() {
         Document document = new Document(111L);
 
         CompleteUser user1 = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
         user1.addDocument(document);
-
-        CompleteUser user2 = new CompleteUser(202L, "BarFoo", "barfoo@com.mail");
 
         List<CompleteUser> expectedUsers = List.of(user1);
 
@@ -106,8 +90,6 @@ public class CompleteUserRepositoryTest {
     public void testFindByRideListIsNotNull() {
         CompleteUser user1 = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
         user1.startRide(new Car(), 0.0, 0.0);
-
-        CompleteUser user2 = new CompleteUser(202L, "BarFoo", "barfoo@com.mail");
 
         List<CompleteUser> expectedUsers = List.of(user1);
 
@@ -126,8 +108,6 @@ public class CompleteUserRepositoryTest {
 
         CompleteUser user1 = new CompleteUser(101L, "Foo Bar", "foobar@mail.com");
         user1.addViolation(violation);
-
-        CompleteUser user2 = new CompleteUser(202L, "BarFoo", "barfoo@com.mail");
 
         List<CompleteUser> expectedUsers = List.of(user1);
 

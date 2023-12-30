@@ -7,34 +7,27 @@ import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "user", schema = "public", catalog = "atomcars")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompleteUser extends BasicUser {
+public class CompleteUser extends User {
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Document> documents = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private ArrayList<Document> documents = new ArrayList<>();
+    private List<Ride> rideList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private ArrayList<Ride> rideList = new ArrayList<>();
-
-    @OneToMany
-    private ArrayList<Violation> violationList = new ArrayList<>();
+    @OneToMany(mappedBy = "completeUser")
+    private List<Violation> violationList = new ArrayList<>();
 
     private Long currentRideId;
-
-
-
-    public CompleteUser(BasicUser parentUser, Document document) {
-        this.setId(parentUser.getId());
-        this.setName(parentUser.getName());
-        this.setEmail(parentUser.getEmail());
-        this.addDocument(document);
-    }
 
     public CompleteUser(Long id, String name, String email) {
         this.setId(id);
@@ -44,6 +37,7 @@ public class CompleteUser extends BasicUser {
 
     public void addDocument(Document document) {
         this.documents.add(document);
+        document.setUser(this);
     }
 
     public void startRide(Car car, Double destinationLatitude, Double destinationLongitude) {

@@ -3,16 +3,11 @@ package com.atomcars;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.EntityManagerHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public class UnitOfWorkImpl implements UnitOfWork {
-
     private final EntityManagerFactory entityManagerFactory = null;
     @Override
     public void begin() {

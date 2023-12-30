@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user", schema = "public", catalog = "atomcars")
 public abstract class User {
 
     @Id
